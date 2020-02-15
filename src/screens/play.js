@@ -82,6 +82,18 @@ export default class PlayScreen extends Screen {
                 case keys.VK_DOWN:
                     this.Move(0, 1);
                     break;
+                case keys.VK_NUMPAD7:
+                    this.Move(-1, -1);
+                    break;
+                case keys.VK_NUMPAD1:
+                    this.Move(-1, 1);
+                    break;
+                case keys.VK_NUMPAD3:
+                    this.Move(1, 1);
+                    break;
+                case keys.VK_NUMPAD9:
+                    this.Move(1, -1);
+                    break;
                 default:
                     break;
             }
