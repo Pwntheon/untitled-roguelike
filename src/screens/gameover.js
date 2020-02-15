@@ -16,7 +16,7 @@ export default class GameOverScreen extends Screen {
     }
 
     Render(display) {
-        for (var i = 0; i < 22; i++) {
+        for (let i = 0; i < 22; i++) {
             display.drawText(2, i + 1, "%b{red}You lose! :(");
         }
     }

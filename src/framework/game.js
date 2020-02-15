@@ -1,10 +1,10 @@
 import * as ROT from 'rot-js';
+
+import * as config from '../config.json';
 import Screens from '../screens';
 
 export default class game {
-    constructor(settings = {}) {
-        this.width = settings.width || 80;
-        this.height = settings.height || 25;
+    constructor() {
         this.currentScreen = null;
         let screenConfig = {game: this};
         this.screens = {
@@ -16,7 +16,7 @@ export default class game {
     }
 
     Init() {
-        this.display = new ROT.Display({width:this.width, height:this.height});
+        this.display = new ROT.Display(config.display.rotConfig);
         document.body.appendChild(this.display.getContainer());
 
         
@@ -24,6 +24,8 @@ export default class game {
         let bindEvent = (eventType) => {
             window.addEventListener(eventType, (event) => {
                 if(game.currentScreen) game.currentScreen.HandleInput(eventType, event);
+                game.display.clear();
+                game.currentScreen.Render(game.display);
             });
         };
         bindEvent('keydown');

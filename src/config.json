@@ -1,0 +1,22 @@
+{
+    "display": {
+        "rotConfig": {
+            "width": 80,
+            "height": 45,
+            "font-size": 18,
+            "forceSquareRatio": true
+        },
+        "playArea": {
+            "width": 80,
+            "height": 40
+        }
+    },
+    "mapGenerators": {
+        "caves": {
+            "iterations": 3,
+            "fill": 0.5,
+            "width": 150,
+            "height": 80
+        }
+    }
+}
