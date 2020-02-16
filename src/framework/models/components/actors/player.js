@@ -1,7 +1,7 @@
 import Component from '../../component';
 
 export default class PlayerActor extends Component {
-    constructor(props) {
+    constructor(props = {}) {
         super({...props, name: "PlayerActor", interface: "Actor"});
     }
 

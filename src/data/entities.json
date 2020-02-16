@@ -8,12 +8,9 @@
                 "foreground": "white",
                 "background": "black"
             },
-            {
-                "name": "PlayerMovable"
-            },
-            {
-                "name": "PlayerActor"
-            }
+            "PlayerMovable",
+            "PlayerActor",
+            "Attacker"
         ]
     },
     "Fungus": {
@@ -25,9 +22,8 @@
                 "foreground": "lime",
                 "background": "black"
             },
-            {
-                "name": "FungusActor"
-            }
+            "FungusActor",
+            "Destructible"
         ]
     }
 }

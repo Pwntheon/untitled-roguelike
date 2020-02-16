@@ -1,7 +1,7 @@
 import Component from '../../component';
 
 export default class PlayerMovable extends Component {
-    constructor(props) {
+    constructor(props = {}) {
         super({...props, name: "PlayerMovable", interface: "Movable"});
     }
 
@@ -9,7 +9,13 @@ export default class PlayerMovable extends Component {
         let tile = map.GetTile(x, y)
         let target = map.GetEntityAt(x, y);
         
-        if(target) return false;
+        if(target) {
+            if(this.entity.HasComponent("Attacker")) {
+                this.entity.components.Attacker.Attack(target);
+                return true;
+            }
+            return false;
+        };
 
         if(tile.IsWalkable) {
             this.entity.x = x;

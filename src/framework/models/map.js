@@ -15,7 +15,7 @@ export default class Map {
         this.scheduler = new ROT.Scheduler.Simple();
         this.engine = new ROT.Engine(this.scheduler);
 
-        for(let i = 0; i < 1000; i++) {
+        for(let i = 0; i < 100; i++) {
             let newFungus = CreateEntity(this.game, "Fungus", 0, 0);
             this.AddEntityAtRandomPosition(newFungus);
         }
@@ -29,6 +29,12 @@ export default class Map {
         entity.SetMap(this);
         this.entities.push(entity);
         if(entity.HasComponent("Actor")) this.scheduler.add(entity, true);
+    }
+
+    RemoveEntity(entity) {
+        let index = this.entities.findIndex(e => e === entity);
+        this.entities.splice(index, 1);
+        if(entity.HasComponent("Actor")) this.scheduler.remove(entity);
     }
 
     AddEntityAtRandomPosition(entity) {
@@ -51,12 +57,16 @@ export default class Map {
         if(this.GetTile(x, y).IsDiggable) this.tiles[x][y] = GetFloor();
     }
 
+    IsWalkable(x, y) {
+        return this.GetTile(x, y).IsWalkable && !this.GetEntityAt(x, y);
+    }
+
     GetRandomWalkablePosition() {
         let x, y;
         do {
             x = Math.floor(Math.random() * this.width);
             y = Math.floor(Math.random() * this.height);
-        } while (!this.GetTile(x, y).IsWalkable || this.GetEntityAt(x, y));
+        } while (!this.IsWalkable(x, y));
         return {x: x, y: y};
     }
 }

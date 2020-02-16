@@ -6,6 +6,9 @@ export default function CreateEntity(game, blueprint, x, y) {
     if(typeof blueprint === "string") blueprint = Blueprints.default[blueprint];
     let componentObjects = []
     blueprint.components.forEach(component => {
+        if(typeof component === "string") {
+            component = {name: component};
+        }
         componentObjects.push(new Components[component.name](component));
     });
     blueprint.components = componentObjects;
