@@ -5,21 +5,13 @@ import {GetNull} from '../factories/tilefactory';
 
 export default class Map {
     constructor(tiles) {
-        this._tiles = tiles;
-        this._width = tiles.length;
-        this._height = tiles[0].length;
-    }
-
-    get width() {
-        return this._width;
-    }
-
-    get height() {
-        return this._height;
+        this.tiles = tiles;
+        this.width = tiles.length;
+        this.height = tiles[0].length;
     }
 
     GetTile(x, y) {
         if(x < 0 || x > this.width || y < 0 || y > this.length) return GetNull();
-        return this._tiles[x][y] || GetNull();
+        return this.tiles[x][y] || GetNull();
     }
 }

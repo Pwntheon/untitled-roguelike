@@ -1,19 +1,8 @@
 export default class Glyph {
-    constructor({character = '', foreground = 'white', background = 'black'} = {}) {
+    constructor(props = {}) {
+        let {character = '', foreground = 'white', background = 'black'} = props;
         this.character = character;
         this.foreground = foreground;
         this.background = background;
-    }
-
-    get char() {
-        return this.character;
-    }
-
-    get color() {
-        return this.foreground;
-    }
-
-    get bg() {
-        return this.background;
     }
 }

@@ -33,13 +33,13 @@ export default class PlayScreen extends Screen {
         let topLeftY = clamp(this.camera.y - viewPort.height/2, this.map.height - viewPort.height, 0);
         for(let x = topLeftX; x < topLeftX + viewPort.width; ++x) {
             for(let y = topLeftY; y < topLeftY + viewPort.height; ++y) {
-                let {char, color, bg} = this.map.GetTile(x, y).glyph;
+                let {character, foreground, background} = this.map.GetTile(x, y);
                 display.draw(
                     x - topLeftX,
                     y - topLeftY,
-                    char,
-                    color,
-                    bg);
+                    character,
+                    foreground,
+                    background);
             }
 
         }

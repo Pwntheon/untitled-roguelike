@@ -1,18 +1,17 @@
 import Tile from '../models/tile';
-import Glyph from '../models/glyph';
 
 function GetNull() {
-    if(!window.objectPool.nullTile) window.objectPool.nullTile = new Tile(new Glyph());
+    if(!window.objectPool.nullTile) window.objectPool.nullTile = new Tile();
     return window.objectPool.nullTile;
 }
 
 function GetWall() {
-    if(!window.objectPool.wallTile) window.objectPool.wallTile = new Tile(new Glyph({character: '#', foreground: 'goldenrod'}));
+    if(!window.objectPool.wallTile) window.objectPool.wallTile = new Tile({character: '#', foreground: 'goldenrod'});
     return window.objectPool.wallTile;
 }
 
 function GetFloor() {
-    if(!window.objectPool.floorTile) window.objectPool.floorTile = new Tile(new Glyph({character: '.', foreground: 'darkgray'}));
+    if(!window.objectPool.floorTile) window.objectPool.floorTile = new Tile({character: '.', foreground: 'darkgray'});
     return window.objectPool.floorTile;
 }
 
