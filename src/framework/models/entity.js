@@ -13,6 +13,9 @@ export default class Entity {
         componentList.forEach(component => {
             component.SetEntity(this);
             this.components[component.interface] = component;
+            if(component.name !== component.interface) {
+                this.components[component.name] = component;
+            }
         });
     }
 
