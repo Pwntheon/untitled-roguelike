@@ -24,8 +24,6 @@ export default class game {
         let bindEvent = (eventType) => {
             window.addEventListener(eventType, (event) => {
                 if(game.currentScreen) game.currentScreen.HandleInput(eventType, event);
-                game.display.clear();
-                game.currentScreen.Render(game.display);
             });
         };
         bindEvent('keydown');
@@ -35,13 +33,37 @@ export default class game {
         this.Transition("splash");
     }
 
+    Render() {
+        this.display.clear();
+        this.currentScreen.Render(this.display);
+    }
+
+    LockCurrentEngine() {
+        try {
+            this.currentScreen.map.engine.lock();
+            return true;
+        } catch (e) {
+            console.log("Tried to lock engine but failed: " + e);
+            return false;
+        }
+    }
+
+    UnlockCurrentEngine() {
+        try {
+            this.currentScreen.map.engine.unlock();
+            return true;
+        } catch (e) {
+            console.log("Tried to unlock engine but failed: " + e);
+            return false;
+        }
+    }
+
     SwitchScreen(newScreen) {
         if(this.currentScreen) this.currentScreen.Exit();
-        this.display.clear();
         this.currentScreen = newScreen;
         if(this.currentScreen) {
             this.currentScreen.Enter();
-            this.currentScreen.Render(this.display);
+            this.Render();
         }
     }
 

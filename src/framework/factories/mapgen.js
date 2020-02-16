@@ -5,7 +5,7 @@ import {GetNull, GetFloor, GetWall} from './tilefactory';
 import Map from '../models/map';
 
 
-function GenerateCave() {
+function GenerateCave(game) {
     let config = Config.mapGenerators.caves;
     const map = GenerateBlankMap(config.width, config.height);
 
@@ -19,7 +19,7 @@ function GenerateCave() {
         else map[x][y] = GetWall();
     });
 
-    return new Map(map);
+    return new Map(game, map);
 }
 
 function GenerateBlankMap(width, height) {

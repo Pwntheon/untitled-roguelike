@@ -6,12 +6,12 @@ function GetNull() {
 }
 
 function GetWall() {
-    if(!window.objectPool.wallTile) window.objectPool.wallTile = new Tile({character: '#', foreground: 'goldenrod', IsDiggable: true});
+    if(!window.objectPool.wallTile) window.objectPool.wallTile = new Tile({character: '#', foreground: 'saddlebrown', IsDiggable: true});
     return window.objectPool.wallTile;
 }
 
 function GetFloor() {
-    if(!window.objectPool.floorTile) window.objectPool.floorTile = new Tile({character: '·', foreground: 'darkgray', IsWalkable: true});
+    if(!window.objectPool.floorTile) window.objectPool.floorTile = new Tile({character: '·', foreground: 'darkslategray', IsWalkable: true});
     return window.objectPool.floorTile;
 }
 

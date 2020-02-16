@@ -1,12 +1,16 @@
-import Component from '../component';
+import Component from '../../component';
 
-export default class Movable extends Component {
+export default class PlayerMovable extends Component {
     constructor(props) {
-        super({...props, name: "Movable"});
+        super({...props, name: "PlayerMovable", interface: "Movable"});
     }
 
     TryMove(x, y, map) {
         let tile = map.GetTile(x, y)
+        let target = map.GetEntityAt(x, y);
+        
+        if(target) return false;
+
         if(tile.IsWalkable) {
             this.entity.x = x;
             this.entity.y = y;

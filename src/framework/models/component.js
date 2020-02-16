@@ -1,6 +1,6 @@
 export default class Component {
     constructor(props = {}) {
-        ({  name: this.name = ''}
+        ({  name: this.name = '', interface: this.interface = ''}
             = props);
         this.entity = null;
     }

@@ -1,5 +1,8 @@
 import Glyph from './glyph';
-import Movable from './movable';
+import PlayerMovable from './movables/player';
+import PlayerActor from './actors/player';
+import FungusActor from './actors/fungus';
 
 export {Glyph,
-        Movable};
+        PlayerMovable,
+        PlayerActor, FungusActor};

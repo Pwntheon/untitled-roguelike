@@ -5,6 +5,7 @@ import * as Config from '../config.json';
 import CreateEntity from '../framework/factories/entityfactory';
 import {GenerateCave} from '../framework/factories/mapgen';
 import Screen from './screen';
+import Entity from '../framework/models/entity.js';
 
 let clamp = (value, max, min = 0) => Math.max(min, Math.min(max, value));
 
@@ -18,9 +19,9 @@ export default class PlayScreen extends Screen {
 
     Enter() {
         super.Enter();
-        this.map = GenerateCave();
-        let spawnPosition = this.map.GetRandomWalkablePosition();
-        this.player = CreateEntity("Player", spawnPosition.x, spawnPosition.y);
+        this.player = CreateEntity(this.game, "Player", 0, 0);
+        this.map = GenerateCave(this.game);
+        this.map.AddEntityAtRandomPosition(this.player);
     }
 
     Exit() {
@@ -43,13 +44,19 @@ export default class PlayScreen extends Screen {
             }
 
         }
-        let glyph = this.player.components.Glyph;
-        display.draw(
-            this.player.x - topLeftX,
-            this.player.y - topLeftY,
-            glyph.character,
-            glyph.foreground,
-            glyph.background);
+
+        this.map.entities.forEach(e => {
+            
+            if( e.x >= topLeftX && e.x < topLeftX + viewPort.width &&
+                e.y >= topLeftY && e.y < topLeftY + viewPort.height) {
+                    display.draw(
+                        e.x - topLeftX,
+                        e.y - topLeftY,
+                        e.components.Glyph.character,
+                        e.components.Glyph.foreground,
+                        e.components.Glyph.background);
+                }
+        })
     }
 
     Move(dX, dY) {
@@ -60,6 +67,7 @@ export default class PlayScreen extends Screen {
     
     HandleInput(eventType, event) {
         let keys = ROT.KEYS;
+        let didAct = false;
         if(eventType === 'keydown') {
             switch(event.keyCode) {
                 case keys.VK_RETURN:
@@ -71,34 +79,43 @@ export default class PlayScreen extends Screen {
                 case keys.VK_NUMPAD4:
                 case keys.VK_LEFT:
                     this.Move(-1, 0);
+                    didAct = true;
                     break;
                 case keys.VK_NUMPAD6:
                 case keys.VK_RIGHT:
                     this.Move(1, 0);
+                    didAct = true;
                     break;
                 case keys.VK_NUMPAD8:
                 case keys.VK_UP:
                     this.Move(0, -1);
+                    didAct = true;
                     break;
                 case keys.VK_NUMPAD2:
                 case keys.VK_DOWN:
                     this.Move(0, 1);
+                    didAct = true;
                     break;
                 case keys.VK_NUMPAD7:
                     this.Move(-1, -1);
+                    didAct = true;
                     break;
                 case keys.VK_NUMPAD1:
                     this.Move(-1, 1);
+                    didAct = true;
                     break;
                 case keys.VK_NUMPAD3:
                     this.Move(1, 1);
+                    didAct = true;
                     break;
                 case keys.VK_NUMPAD9:
                     this.Move(1, -1);
+                    didAct = true;
                     break;
                 default:
                     break;
             }
         }
+        if(didAct) this.game.UnlockCurrentEngine();
     }
 }

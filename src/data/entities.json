@@ -9,7 +9,24 @@
                 "background": "black"
             },
             {
-                "name": "Movable"
+                "name": "PlayerMovable"
+            },
+            {
+                "name": "PlayerActor"
+            }
+        ]
+    },
+    "Fungus": {
+        "name": "Fungus",
+        "components": [
+            {
+                "name": "Glyph",
+                "character": "F",
+                "foreground": "lime",
+                "background": "black"
+            },
+            {
+                "name": "FungusActor"
             }
         ]
     }
