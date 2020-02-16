@@ -2,6 +2,7 @@ import * as ROT from 'rot-js';
 
 import * as Config from '../config.json';
 
+import CreateEntity from '../framework/factories/entityfactory';
 import {GenerateCave} from '../framework/factories/mapgen';
 import Screen from './screen';
 
@@ -12,15 +13,14 @@ export default class PlayScreen extends Screen {
         super(Config);
         this.screenName = "Play screen";
         this.map = null;
-        this.camera = {
-            x: 10,
-            y: 10
-        };
+        this.player = null;
     }
 
     Enter() {
         super.Enter();
         this.map = GenerateCave();
+        let spawnPosition = this.map.GetRandomWalkablePosition();
+        this.player = CreateEntity("Player", spawnPosition.x, spawnPosition.y);
     }
 
     Exit() {
@@ -29,8 +29,8 @@ export default class PlayScreen extends Screen {
 
     Render(display) {
         let viewPort = Config.display.playArea;
-        let topLeftX = clamp(this.camera.x - viewPort.width/2, this.map.width - viewPort.width, 0);
-        let topLeftY = clamp(this.camera.y - viewPort.height/2, this.map.height - viewPort.height, 0);
+        let topLeftX = clamp(this.player.x - viewPort.width/2, this.map.width - viewPort.width, 0);
+        let topLeftY = clamp(this.player.y - viewPort.height/2, this.map.height - viewPort.height, 0);
         for(let x = topLeftX; x < topLeftX + viewPort.width; ++x) {
             for(let y = topLeftY; y < topLeftY + viewPort.height; ++y) {
                 let {character, foreground, background} = this.map.GetTile(x, y);
@@ -43,17 +43,19 @@ export default class PlayScreen extends Screen {
             }
 
         }
+        let glyph = this.player.components.Glyph;
         display.draw(
-            this.camera.x - topLeftX,
-            this.camera.y - topLeftY,
-            '@',
-            'white',
-            'black');
+            this.player.x - topLeftX,
+            this.player.y - topLeftY,
+            glyph.character,
+            glyph.foreground,
+            glyph.background);
     }
 
     Move(dX, dY) {
-        this.camera.x = clamp(this.camera.x + dX, this.map.width-1);
-        this.camera.y = clamp(this.camera.y + dY, this.map.height-1);
+        let x = this.player.x + dX;
+        let y = this.player.y + dY;
+        this.player.components.Movable.TryMove(x, y, this.map);
     }
     
     HandleInput(eventType, event) {

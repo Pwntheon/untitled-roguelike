@@ -1,8 +1,11 @@
-import Glyph from './glyph';
+import Glyph from './components/glyph';
 
 export default class Tile {
     constructor(props = {}) {
         this.glyph = new Glyph(props);
         Object.assign(this, this.glyph);
+        ({  IsWalkable: this.IsWalkable = false,
+            IsDiggable: this.IsDiggable = false}
+            = props);
     }
 }

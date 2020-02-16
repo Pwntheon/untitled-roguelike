@@ -1,0 +1,16 @@
+{
+    "Player": {
+        "name": "Player",
+        "components": [
+            {
+                "name": "Glyph",
+                "character": "@",
+                "foreground": "white",
+                "background": "black"
+            },
+            {
+                "name": "Movable"
+            }
+        ]
+    }
+}
