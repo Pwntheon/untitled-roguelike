@@ -11,7 +11,7 @@ function GetWall() {
 }
 
 function GetFloor() {
-    if(!window.objectPool.floorTile) window.objectPool.floorTile = new Tile({character: '.', foreground: 'darkgray', IsWalkable: true});
+    if(!window.objectPool.floorTile) window.objectPool.floorTile = new Tile({character: '·', foreground: 'darkgray', IsWalkable: true});
     return window.objectPool.floorTile;
 }
 
