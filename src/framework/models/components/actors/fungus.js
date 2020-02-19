@@ -22,6 +22,7 @@ export default class FungusActor extends Component {
                     newFungus.components.FungusActor.growthsRemaining = this.growthsRemaining / 2;
                     this.growthsRemaining = this.growthsRemaining / 2;
                     this.entity.map.AddEntity(newFungus);
+                    this.entity.game.PostEventToNearbyEntities(this.entity.map, this.entity.x, this.entity.y, `The ${this.entity.name} is spreading!`);
                 }
             }
         }

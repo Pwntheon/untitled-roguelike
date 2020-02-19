@@ -33,6 +33,16 @@ export default class game {
         this.Transition("splash");
     }
 
+    PostEventToNearbyEntities(map, x, y, event, radius = 5) {
+        map.GetEntitiesWithinRadius(x, y, radius).forEach(e => this.PostEvent(e, event));
+    }
+
+    PostEvent(target, event) {
+        if(target.HasComponent("EventListener")) {
+            target.components.EventListener.Post(event);
+        }
+    }
+
     Render() {
         this.display.clear();
         this.currentScreen.Render(this.display);

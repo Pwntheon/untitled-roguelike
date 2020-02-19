@@ -53,6 +53,14 @@ export default class Map {
         return this.tiles[x][y] || GetNull();
     }
 
+    GetEntitiesWithinRadius(x, y, radius) {
+        let xMin = x - radius;
+        let xMax = x + radius;
+        let yMin = y - radius;
+        let yMax = y + radius;
+        return this.entities.filter(e => e.x >= xMin && e.x <= xMax && e.y >= yMin && e.y <= yMax);
+    }
+
     Dig(x, y) {
         if(this.GetTile(x, y).IsDiggable) this.tiles[x][y] = GetFloor();
     }

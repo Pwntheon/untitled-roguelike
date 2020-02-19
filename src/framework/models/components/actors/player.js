@@ -9,5 +9,8 @@ export default class PlayerActor extends Component {
         let game = this.entity.game;
         game.Render();
         game.LockCurrentEngine();
+        if(this.entity.HasComponent("EventListener")) {
+            this.entity.components.EventListener.Clear();
+        }
     }
 }

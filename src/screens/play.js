@@ -56,7 +56,22 @@ export default class PlayScreen extends Screen {
                         e.components.Glyph.foreground,
                         e.components.Glyph.background);
                 }
-        })
+        });
+
+        let textPosition = {x: 0, y: viewPort.height};
+        let {hp, maxHp} = this.player.components.Destructible;
+        const hpColor = hp > maxHp/2 ? "%c{green}%b{black}" : "%c{red}%b{black}";
+        textPosition.y += display.drawText( textPosition.x,
+                                            textPosition.y,
+                                            `Hp: ${hpColor + hp}%c{white}%b{black}/${maxHp}`);
+
+        
+        this.player.components.EventListener.events.forEach(e => {
+            textPosition.y += display.drawText( textPosition.x,
+                                                textPosition.y,
+                                                e,
+                                                Config.display.rotConfig.width);
+        });
     }
 
     Move(dX, dY) {
