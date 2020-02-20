@@ -3,7 +3,7 @@ import * as ROT from 'rot-js';
 import * as Config from '../config.json';
 
 import CreateEntity from '../framework/factories/entityfactory';
-import {GenerateCave} from '../framework/factories/mapgen';
+import DungeonGenerator from '../framework/factories/dungeongen';
 import Screen from './screen';
 import Entity from '../framework/models/entity.js';
 
@@ -20,7 +20,8 @@ export default class PlayScreen extends Screen {
     Enter() {
         super.Enter();
         this.player = CreateEntity(this.game, "Player", 0, 0);
-        this.map = GenerateCave(this.game);
+        const gen = new DungeonGenerator(this.game);
+        this.map = gen.Generate(this.game)[0];
         this.map.AddEntityAtRandomPosition(this.player);
     }
 

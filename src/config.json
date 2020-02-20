@@ -11,12 +11,19 @@
             "height": 40
         }
     },
+    "dungeon": {
+        "width": 150,
+        "height": 80,
+        "levels": [    
+            "Cave",
+            "Cave",
+            "Cave"
+        ]
+    },
     "mapGenerators": {
-        "caves": {
+        "cave": {
             "iterations": 3,
-            "fill": 0.5,
-            "width": 150,
-            "height": 80
+            "fill": 0.5
         }
     }
 }

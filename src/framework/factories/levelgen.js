@@ -5,11 +5,11 @@ import {GetNull, GetFloor, GetWall} from './tilefactory';
 import Map from '../models/map';
 
 
-function GenerateCave(game) {
-    let config = Config.mapGenerators.caves;
-    const map = GenerateBlankMap(config.width, config.height);
+function Cave(game, width, height) {
+    let config = Config.mapGenerators.cave;
+    const map = GenerateBlankMap(width, height);
 
-    const generator = new ROT.Map.Cellular(config.width, config.height);
+    const generator = new ROT.Map.Cellular(width, height);
     generator.randomize(config.fill);
 
     // Generate n-1 times - last time we need to fetch the results
@@ -35,4 +35,4 @@ function GenerateBlankMap(width, height) {
     return map;
 }
 
-export {GenerateCave};
+export {Cave};

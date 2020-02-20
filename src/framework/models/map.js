@@ -1,8 +1,9 @@
-import Tile from './tile';
-import Glyph from './components/glyph';
+import * as ROT from 'rot-js';
+
 import {GetNull, GetFloor} from '../factories/tilefactory';
 import CreateEntity from '../factories/entityfactory';
-import * as ROT from 'rot-js';
+import {ShuffleArray} from '../../utils/array';
+
 
 export default class Map {
     constructor(game, tiles, player) {
@@ -59,6 +60,20 @@ export default class Map {
         let yMin = y - radius;
         let yMax = y + radius;
         return this.entities.filter(e => e.x >= xMin && e.x <= xMax && e.y >= yMin && e.y <= yMax);
+    }
+
+    GetNeighborTiles(x, y) {
+        let tiles = [];
+        for (var dX = -1; dX < 2; dX ++) {
+            for (var dY = -1; dY < 2; dY++) {
+                // Make sure it isn't the same tile
+                if (dX == 0 && dY == 0) {
+                    continue;
+                }
+                tiles.push({x: x + dX, y: y + dY});
+            }
+        }
+        return ShuffleArray(tiles);
     }
 
     Dig(x, y) {

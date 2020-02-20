@@ -15,4 +15,14 @@ function GetFloor() {
     return window.objectPool.floorTile;
 }
 
-export {GetNull, GetWall, GetFloor};
+function GetUpStair() {
+    if(!window.objectPool.upStairTile) window.objectPool.upStairTile = new Tile({character: '<', foreground: 'white', IsWalkable: true});
+    return window.objectPool.upStairTile;
+}
+
+function GetDownStair() {
+    if(!window.objectPool.downStairTile) window.objectPool.downStairTile = new Tile({character: '>', foreground: 'white', IsWalkable: true});
+    return window.objectPool.downStairTile;
+}
+
+export {GetNull, GetWall, GetFloor, GetUpStair, GetDownStair};
