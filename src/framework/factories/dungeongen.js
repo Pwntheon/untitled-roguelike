@@ -59,7 +59,7 @@ export default class DungeonGenerator {
 
         while(tiles.length) {
             tile = tiles.pop();
-            neighbors = this.maps[z].GetNeighborTiles(x, y);
+            neighbors = this.maps[z].GetNeighborTiles(tile.x, tile.y);
             while(neighbors.length) {
                 tile = neighbors.pop();
                 if(this.CanFillRegion(tile.x, tile.y, z)) {
@@ -120,8 +120,8 @@ export default class DungeonGenerator {
         if(!overlaps.length) return false;
 
         let position = overlaps[0];
-        this.levels[z].tiles[position.x][position.y] = GetDownStair();
-        this.levels[z+1].tiles[position.x][position.y] = GetUpStair();
+        this.maps[z].tiles[position.x][position.y] = GetDownStair();
+        this.maps[z+1].tiles[position.x][position.y] = GetUpStair();
         return true;
     }
 
