@@ -86,9 +86,11 @@ export default class Map {
 
     GetRandomWalkablePosition() {
         let x, y;
+        let iterations = 0;
         do {
             x = Math.floor(Math.random() * this.width);
             y = Math.floor(Math.random() * this.height);
+            if(iterations++ > 10000) throw new Error("Couldn't find walkable position in map" + this);
         } while (!this.IsWalkable(x, y));
         return {x: x, y: y};
     }

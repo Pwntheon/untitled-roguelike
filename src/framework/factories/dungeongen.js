@@ -25,7 +25,9 @@ export default class DungeonGenerator {
                     this.regions[z][x][y] = 0;
                 }
             }
+            ++z;
         });
+        
         for(let z = 0; z < this.config.levels.length; ++z) {
             this.SetupRegions(z);
         }
@@ -36,16 +38,17 @@ export default class DungeonGenerator {
     CanFillRegion(x, y, z) {
         const {width, height} = this.config;
         const depth = this.config.levels.length;
-        if( x < 0     || y < 0      || z < 0 ||
-            x > width || y > height || z > depth) {
+        if( x < 0      || y < 0       || z < 0 ||
+            x >= width || y >= height || z >= depth) {
             return false;
         }
     
         if(this.regions[z][x][y] !== 0) {
             return false;
         }
+        let tile = this.GetTile(x, y, z)
     
-        return this.GetTile(x, y, z).IsWalkable;    
+        return tile.IsWalkable;    
     }
 
     FillRegion(regionId, x, y, z) {

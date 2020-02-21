@@ -3,6 +3,7 @@ import * as Config from '../../config.json';
 
 import {GetNull, GetFloor, GetWall} from './tilefactory';
 import Map from '../models/map';
+import {LogTilesArray} from '../../utils/map';
 
 
 function Cave(game, width, height) {
@@ -18,7 +19,7 @@ function Cave(game, width, height) {
         if(v === 1) map[x][y] = GetFloor();
         else map[x][y] = GetWall();
     });
-
+    LogTilesArray(map);
     return new Map(game, map);
 }
 
