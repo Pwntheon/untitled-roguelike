@@ -6,7 +6,7 @@ import {ShuffleArray} from '../../utils/array';
 
 
 export default class Map {
-    constructor(game, tiles, player) {
+    constructor(game, tiles) {
         this.tiles = tiles;
         this.width = tiles.length;
         this.height = tiles[0].length;

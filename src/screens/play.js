@@ -5,7 +5,7 @@ import * as Config from '../config.json';
 import CreateEntity from '../framework/factories/entityfactory';
 import DungeonGenerator from '../framework/factories/dungeongen';
 import Screen from './screen';
-import Entity from '../framework/models/entity.js';
+import {GetUpStair, GetDownStair} from '../framework/factories/tilefactory';
 
 let clamp = (value, max, min = 0) => Math.max(min, Math.min(max, value));
 
@@ -13,15 +13,51 @@ export default class PlayScreen extends Screen {
     constructor(Config) {
         super(Config);
         this.screenName = "Play screen";
-        this.map = null;
+        this.currentLevel = 0;
         this.player = null;
+        this.dungeon = null;
+    }
+
+    get map() {
+        return this.dungeon[this.currentLevel];
+    }
+
+    Ascend() {
+        if(this.currentLevel <= 0) {
+            this.player.components.EventListener.Post("You cannot go higher. This is the first floor of the dungeon.");
+            return false;
+        }
+        if(this.map.GetTile(this.player.x, this.player.y) !== GetUpStair()) {
+            this.player.components.EventListener.Post("There are no stairs leading up here.");
+            return false;
+        }
+
+        this.map.RemoveEntity(this.player);
+        --this.currentLevel;
+        this.map.AddEntity(this.player);
+        return true;
+    }
+
+    Descend() {
+        if(this.currentLevel >= this.dungeon.length -1) {
+            this.player.components.EventListener.Post("You cannot go deeper.");
+            return false;
+        }
+        if(this.map.GetTile(this.player.x, this.player.y) !== GetDownStair()) {
+            this.player.components.EventListener.Post("There are no stairs leading down here.");
+            return false;
+        }
+        
+        this.map.RemoveEntity(this.player);
+        ++this.currentLevel;
+        this.map.AddEntity(this.player);
+        return true;
     }
 
     Enter() {
         super.Enter();
         this.player = CreateEntity(this.game, "Player", 0, 0);
-        const gen = new DungeonGenerator(this.game);
-        this.map = gen.Generate(this.game)[0];
+        this.dungeon = new DungeonGenerator(this.game).Generate(this.game);
         this.map.AddEntityAtRandomPosition(this.player);
     }
 
@@ -84,6 +120,18 @@ export default class PlayScreen extends Screen {
     HandleInput(eventType, event) {
         let keys = ROT.KEYS;
         let didAct = false;
+        if(eventType === 'keypress') {
+            switch(String.fromCharCode(event.charCode)) {
+                case '>':
+                    didAct = this.Descend();
+                    break;
+                case '<':
+                    didAct = this.Ascend();
+                    break;
+                default:
+                    break;
+            }
+        }
         if(eventType === 'keydown') {
             switch(event.keyCode) {
                 case keys.VK_RETURN:
@@ -133,5 +181,6 @@ export default class PlayScreen extends Screen {
             }
         }
         if(didAct) this.game.UnlockCurrentEngine();
+        else this.game.Render();
     }
 }
