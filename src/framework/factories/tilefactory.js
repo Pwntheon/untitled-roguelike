@@ -6,7 +6,7 @@ function GetNull() {
 }
 
 function GetWall() {
-    if(!window.objectPool.wallTile) window.objectPool.wallTile = new Tile({character: '#', foreground: 'saddlebrown', IsDiggable: true});
+    if(!window.objectPool.wallTile) window.objectPool.wallTile = new Tile({character: '#', foreground: 'saddlebrown', IsDiggable: true, BlocksLight: true});
     return window.objectPool.wallTile;
 }
 

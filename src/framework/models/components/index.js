@@ -5,10 +5,12 @@ import FungusActor from './actors/fungus';
 import Destructible from './destructible';
 import Attacker from './attacker';
 import EventListener from './eventListener';
+import Sight from './sight';
 
 export {Glyph,
         Destructible,
         Attacker,
         EventListener,
+        Sight,
         PlayerMovable,
         PlayerActor, FungusActor};

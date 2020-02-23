@@ -5,7 +5,8 @@ export default class Tile {
         this.glyph = new Glyph(props);
         Object.assign(this, this.glyph);
         ({  IsWalkable: this.IsWalkable = false,
-            IsDiggable: this.IsDiggable = false}
+            IsDiggable: this.IsDiggable = false,
+            BlocksLight: this.BlocksLight = false}
             = props);
     }
 }

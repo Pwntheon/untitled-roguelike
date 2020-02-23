@@ -69,8 +69,15 @@ export default class PlayScreen extends Screen {
         let viewPort = Config.display.playArea;
         let topLeftX = clamp(this.player.x - viewPort.width/2, this.map.width - viewPort.width, 0);
         let topLeftY = clamp(this.player.y - viewPort.height/2, this.map.height - viewPort.height, 0);
+        let visibleCells = {};
+        this.map.fov.compute(this.player.x, this.player.y, this.player.components.Sight.radius,
+            (x, y, radius, visibility) => {
+                visibleCells[`${x},${y}`] = true;
+            });
         for(let x = topLeftX; x < topLeftX + viewPort.width; ++x) {
             for(let y = topLeftY; y < topLeftY + viewPort.height; ++y) {
+                if(!visibleCells[`${x},${y}`]) continue;
+
                 let {character, foreground, background} = this.map.GetTile(x, y);
                 display.draw(
                     x - topLeftX,
@@ -86,13 +93,15 @@ export default class PlayScreen extends Screen {
             
             if( e.x >= topLeftX && e.x < topLeftX + viewPort.width &&
                 e.y >= topLeftY && e.y < topLeftY + viewPort.height) {
-                    display.draw(
-                        e.x - topLeftX,
-                        e.y - topLeftY,
-                        e.components.Glyph.character,
-                        e.components.Glyph.foreground,
-                        e.components.Glyph.background);
-                }
+                if(!visibleCells[`${e.x},${e.y}`]) return;
+                
+                display.draw(
+                    e.x - topLeftX,
+                    e.y - topLeftY,
+                    e.components.Glyph.character,
+                    e.components.Glyph.foreground,
+                    e.components.Glyph.background);
+            }
         });
 
         let textPosition = {x: 0, y: viewPort.height};

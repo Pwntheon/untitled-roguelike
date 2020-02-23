@@ -15,6 +15,10 @@ export default class Map {
         this.entities = [];
         this.scheduler = new ROT.Scheduler.Simple();
         this.engine = new ROT.Engine(this.scheduler);
+        let map = this;
+        this.fov = new ROT.FOV.DiscreteShadowcasting(function(x, y) {
+            return !map.GetTile(x, y).BlocksLight;
+        }); //, {topology: 8});
 
         for(let i = 0; i < 100; i++) {
             let newFungus = CreateEntity(this.game, "Fungus", 0, 0);
