@@ -8,5 +8,7 @@ export default class Tile {
             IsDiggable: this.IsDiggable = false,
             BlocksLight: this.BlocksLight = false}
             = props);
+
+        this.seen = false;
     }
 }

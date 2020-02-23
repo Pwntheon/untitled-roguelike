@@ -11,6 +11,7 @@ export default class Map {
         this.width = tiles.length;
         this.height = tiles[0].length;
         this.game = game;
+        this.seen = {};
 
         this.entities = [];
         this.scheduler = new ROT.Scheduler.Simple();

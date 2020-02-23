@@ -76,9 +76,13 @@ export default class PlayScreen extends Screen {
             });
         for(let x = topLeftX; x < topLeftX + viewPort.width; ++x) {
             for(let y = topLeftY; y < topLeftY + viewPort.height; ++y) {
-                if(!visibleCells[`${x},${y}`]) continue;
+                let inFov = !!visibleCells[`${x},${y}`];
+                let seen = !!this.map.seen[`${x},${y}`]
+                if(!inFov && !seen) continue;
 
                 let {character, foreground, background} = this.map.GetTile(x, y);
+                if(!inFov) foreground = 'darkslategray';
+                this.map.seen[`${x},${y}`] = true;
                 display.draw(
                     x - topLeftX,
                     y - topLeftY,
