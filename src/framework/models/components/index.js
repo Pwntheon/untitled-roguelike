@@ -1,7 +1,8 @@
 import Glyph from './glyph';
-import PlayerMovable from './movables/player';
+import WalkMovable from './movables/walk';
 import PlayerActor from './actors/player';
 import FungusActor from './actors/fungus';
+import WanderActor from './actors/wander';
 import Destructible from './destructible';
 import Attacker from './attacker';
 import EventListener from './eventListener';
@@ -12,5 +13,5 @@ export {Glyph,
         Attacker,
         EventListener,
         Sight,
-        PlayerMovable,
-        PlayerActor, FungusActor};
+        WalkMovable,
+        PlayerActor, FungusActor, WanderActor};

@@ -4,6 +4,7 @@ import {GetNull, GetFloor} from '../factories/tilefactory';
 import CreateEntity from '../factories/entityfactory';
 import {ShuffleArray} from '../../utils/array';
 
+const k = (x, y) => `${x},${y}`;
 
 export default class Map {
     constructor(game, tiles) {
@@ -13,33 +14,29 @@ export default class Map {
         this.game = game;
         this.seen = {};
 
-        this.entities = [];
+        this.entities = {};
         this.scheduler = new ROT.Scheduler.Simple();
         this.engine = new ROT.Engine(this.scheduler);
         let map = this;
         this.fov = new ROT.FOV.DiscreteShadowcasting(function(x, y) {
             return !map.GetTile(x, y).BlocksLight;
         }); //, {topology: 8});
-
+        let enemies = ["Bat", "Newt", "Fungus"];
         for(let i = 0; i < 100; i++) {
-            let newFungus = CreateEntity(this.game, "Fungus", 0, 0);
-            this.AddEntityAtRandomPosition(newFungus);
+            let enemyType = enemies[Math.floor(Math.random() * 3)];
+            let newEnemy = CreateEntity(this.game, enemyType, 0, 0);
+            this.AddEntityAtRandomPosition(newEnemy);
         }
     }
 
     AddEntity(entity) {
-        if( entity.x < 0 || entity.x > this.width ||
-            entity.y < 0 || entity.y > this.height)
-            throw new Error('Attempted to add enitity out of bounds: ', entity);
-
         entity.SetMap(this);
-        this.entities.push(entity);
+        this.UpdateEntityPosition(entity);
         if(entity.HasComponent("Actor")) this.scheduler.add(entity, true);
     }
 
     RemoveEntity(entity) {
-        let index = this.entities.findIndex(e => e === entity);
-        this.entities.splice(index, 1);
+        delete this.entities[k(entity.x, entity.y)];
         if(entity.HasComponent("Actor")) this.scheduler.remove(entity);
     }
 
@@ -50,21 +47,39 @@ export default class Map {
         this.AddEntity(entity);
     }
 
+    UpdateEntityPosition(entity, oldX, oldY) {
+        if(this.entities[k(oldX, oldY)] === entity) {
+            delete this.entities[k(oldX, oldY)];
+        }
+        if( entity.x < 0 || entity.x > this.width ||
+            entity.y < 0 || entity.y > this.height)
+            throw new Error('Attempted to add enitity out of bounds: ', entity);
+        if(this.entities[k(entity.x, entity.y)]) throw new Error('Attempting to add entity to occupied space', entity);
+
+        this.entities[k(entity.x, entity.y)] = entity;
+
+    }
+
     GetEntityAt(x, y) {
-        return this.entities.find(e => e.x === x && e.y === y) || false;
+        return this.entities[k(x,y)];
     }
 
     GetTile(x, y) {
-        if(x < 0 || x > this.width || y < 0 || y > this.length) return GetNull();
+        if(x < 0 || x >= this.width || y < 0 || y >= this.length) return GetNull();
         return this.tiles[x][y] || GetNull();
     }
 
     GetEntitiesWithinRadius(x, y, radius) {
-        let xMin = x - radius;
-        let xMax = x + radius;
-        let yMin = y - radius;
-        let yMax = y + radius;
-        return this.entities.filter(e => e.x >= xMin && e.x <= xMax && e.y >= yMin && e.y <= yMax);
+        let result = [];
+        for(let key in this.entities) {
+            let entity = this.entities[key];
+            let xMin = x - radius;
+            let xMax = x + radius;
+            let yMin = y - radius;
+            let yMax = y + radius;
+            if(entity.x >= xMin && entity.x <= xMax && entity.y >= yMin && entity.y <= yMax) result.push(entity);
+        }
+        return result;
     }
 
     GetNeighborTiles(x, y) {

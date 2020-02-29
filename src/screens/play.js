@@ -66,6 +66,7 @@ export default class PlayScreen extends Screen {
     }
 
     Render(display) {
+        console.log("Render");
         let viewPort = Config.display.playArea;
         let topLeftX = clamp(this.player.x - viewPort.width/2, this.map.width - viewPort.width, 0);
         let topLeftY = clamp(this.player.y - viewPort.height/2, this.map.height - viewPort.height, 0);
@@ -93,11 +94,11 @@ export default class PlayScreen extends Screen {
 
         }
 
-        this.map.entities.forEach(e => {
-            
+        for(let key in this.map.entities) {
+            let e = this.map.entities[key];
             if( e.x >= topLeftX && e.x < topLeftX + viewPort.width &&
                 e.y >= topLeftY && e.y < topLeftY + viewPort.height) {
-                if(!visibleCells[`${e.x},${e.y}`]) return;
+                if(!visibleCells[`${e.x},${e.y}`]) continue;
                 
                 display.draw(
                     e.x - topLeftX,
@@ -106,7 +107,7 @@ export default class PlayScreen extends Screen {
                     e.components.Glyph.foreground,
                     e.components.Glyph.background);
             }
-        });
+        }
 
         let textPosition = {x: 0, y: viewPort.height};
         let {hp, maxHp} = this.player.components.Destructible;
@@ -127,12 +128,21 @@ export default class PlayScreen extends Screen {
     Move(dX, dY) {
         let x = this.player.x + dX;
         let y = this.player.y + dY;
-        this.player.components.Movable.TryMove(x, y, this.map);
+        return this.player.components.Movable.TryMove(x, y, this.map);
     }
     
     HandleInput(eventType, event) {
         let keys = ROT.KEYS;
         let didAct = false;
+        let emptyInput = false;
+
+        if(eventType === 'keyup') {
+            switch(event.keyCode) {
+                default:
+                    emptyInput = true;
+                    break;
+            }
+        }
         if(eventType === 'keypress') {
             switch(String.fromCharCode(event.charCode)) {
                 case '>':
@@ -142,6 +152,7 @@ export default class PlayScreen extends Screen {
                     didAct = this.Ascend();
                     break;
                 default:
+                    emptyInput = true;
                     break;
             }
         }
@@ -155,45 +166,38 @@ export default class PlayScreen extends Screen {
                     break;
                 case keys.VK_NUMPAD4:
                 case keys.VK_LEFT:
-                    this.Move(-1, 0);
-                    didAct = true;
+                    didAct = this.Move(-1, 0);
                     break;
                 case keys.VK_NUMPAD6:
                 case keys.VK_RIGHT:
-                    this.Move(1, 0);
-                    didAct = true;
+                    didAct = this.Move(1, 0);
                     break;
                 case keys.VK_NUMPAD8:
                 case keys.VK_UP:
-                    this.Move(0, -1);
-                    didAct = true;
+                    didAct = this.Move(0, -1);
                     break;
                 case keys.VK_NUMPAD2:
                 case keys.VK_DOWN:
-                    this.Move(0, 1);
-                    didAct = true;
+                    didAct = this.Move(0, 1);
                     break;
                 case keys.VK_NUMPAD7:
-                    this.Move(-1, -1);
-                    didAct = true;
+                    didAct = this.Move(-1, -1);
                     break;
                 case keys.VK_NUMPAD1:
-                    this.Move(-1, 1);
-                    didAct = true;
+                    didAct = this.Move(-1, 1);
                     break;
                 case keys.VK_NUMPAD3:
-                    this.Move(1, 1);
-                    didAct = true;
+                    didAct = this.Move(1, 1);
                     break;
                 case keys.VK_NUMPAD9:
-                    this.Move(1, -1);
-                    didAct = true;
+                    didAct = this.Move(1, -1);
                     break;
                 default:
+                    emptyInput = true;
                     break;
             }
         }
         if(didAct) this.game.UnlockCurrentEngine();
-        else this.game.Render();
+        else if(!emptyInput) this.game.Render();
     }
 }

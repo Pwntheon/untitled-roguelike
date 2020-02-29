@@ -19,6 +19,16 @@ export default class Entity {
         });
     }
 
+    get position() {
+        return {x: this.x, y: this.y};
+    }
+
+    set position(pos) {
+        let oldPos = this.position;
+        ({x: this.x, y: this.y} = pos);
+        this.map.UpdateEntityPosition(this, oldPos.x, oldPos.y);
+    }
+
     act() {
         if(this.HasComponent("Actor")) {
             this.components.Actor.act();

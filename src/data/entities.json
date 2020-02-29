@@ -8,7 +8,7 @@
                 "foreground": "white",
                 "background": "black"
             },
-            "PlayerMovable",
+            "WalkMovable",
             "EventListener",
             "Sight",
             "PlayerActor",
@@ -19,6 +19,50 @@
             {
                 "name": "Destructible",
                 "maxHp": 40
+            }
+        ]
+    },
+    "Newt": {
+        "name": "Newt",
+        "components": [
+            {
+                "name": "Glyph",
+                "character": ":",
+                "foreground": "yellow",
+                "background": "black"
+            },
+            "WanderActor",
+            "WalkMovable",
+            "Destructible",
+            {
+                "name": "Attacker",
+                "attack": 1
+            },
+            {
+                "name": "Destructible",
+                "maxHp": 8
+            }
+        ]
+    },
+    "Bat": {
+        "name": "Bat",
+        "components": [
+            {
+                "name": "Glyph",
+                "character": "B",
+                "foreground": "lightgray",
+                "background": "black"
+            },
+            "WanderActor",
+            "WalkMovable",
+            "Destructible",
+            {
+                "name": "Attacker",
+                "attack": 3
+            },
+            {
+                "name": "Destructible",
+                "maxHp": 10
             }
         ]
     },
