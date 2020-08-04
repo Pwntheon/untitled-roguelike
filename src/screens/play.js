@@ -94,6 +94,25 @@ export default class PlayScreen extends Screen {
 
         }
 
+        for(let key in this.map.items) {
+            let itemToRender = this.map.items[key].find(i => i.HasComponent("Glyph"));
+            if(itemToRender) {
+
+                let [x, y] = key.split(',');
+                if( x >= topLeftX && x < topLeftX + viewPort.width &&
+                    y >= topLeftY && y < topLeftY + viewPort.height) {
+                    if(!visibleCells[`${x},${y}`]) continue;
+                        
+                    display.draw(
+                        x - topLeftX,
+                        y - topLeftY,
+                        itemToRender.components.Glyph.character,
+                        itemToRender.components.Glyph.foreground,
+                        itemToRender.components.Glyph.background);
+                }
+            }
+        }
+
         for(let key in this.map.entities) {
             let e = this.map.entities[key];
             if( e.x >= topLeftX && e.x < topLeftX + viewPort.width &&

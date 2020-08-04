@@ -1,0 +1,21 @@
+{
+    "Apple": {
+        "name": "Apple",
+        "components": [
+            {
+                "name": "Glyph",
+                "character": "%",
+                "foreground": "red"
+            }
+        ]
+    },
+    "Rock": {
+        "name": "Rock",
+        "components": [
+            {
+                "name":"Glyph",
+                "character": "*"
+            }
+        ]
+    }
+}

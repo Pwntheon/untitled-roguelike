@@ -2,6 +2,7 @@ import * as ROT from 'rot-js';
 
 import {GetNull, GetFloor} from '../factories/tilefactory';
 import CreateEntity from '../factories/entityfactory';
+import CreateItem from '../factories/itemfactory';
 import {ShuffleArray} from '../../utils/array';
 
 const k = (x, y) => `${x},${y}`;
@@ -15,17 +16,26 @@ export default class Map {
         this.seen = {};
 
         this.entities = {};
+        this.items = {};
         this.scheduler = new ROT.Scheduler.Simple();
         this.engine = new ROT.Engine(this.scheduler);
         let map = this;
         this.fov = new ROT.FOV.DiscreteShadowcasting(function(x, y) {
             return !map.GetTile(x, y).BlocksLight;
-        }); //, {topology: 8});
+        });
         let enemies = ["Bat", "Newt", "Fungus"];
         for(let i = 0; i < 100; i++) {
             let enemyType = enemies[Math.floor(Math.random() * 3)];
             let newEnemy = CreateEntity(this.game, enemyType, 0, 0);
             this.AddEntityAtRandomPosition(newEnemy);
+        }
+        for(let i = 0; i < 60; i++) {
+            let newItem = CreateItem(this.game, "Rock");
+            this.AddItemAtRandomPosition(newItem);
+        }
+        for(let i = 0; i < 25; i++) {
+            let newItem = CreateItem(this.game, "Apple");
+            this.AddItemAtRandomPosition(newItem);
         }
     }
 
@@ -64,6 +74,33 @@ export default class Map {
         return this.entities[k(x,y)];
     }
 
+    GetItemsAt(x, y) {
+        return this.items[k(x,y)];
+    }
+
+    SetItemsAt(x, y, items) {
+        // Delete key if items is unset/empty
+        if((!items || items.length === 0)
+            && this.items[k(x,y)]) {
+                delete this.items[k(k,y)];
+        } else {
+            this.items[k(x,y)] = items;
+        }
+    }
+
+    AddItem(x, y, item) {
+        if(this.items[k(x,y)]) {
+            this.items[k(x,y)].push(item);
+        } else {
+            this.items[k(x,y)] = [item];
+        }
+    }
+
+    AddItemAtRandomPosition(item) {
+        let position = this.GetRandomWalkablePosition();
+        this.AddItem(position.x, position.y, item);
+    }
+
     GetTile(x, y) {
         if(x < 0 || x >= this.width || y < 0 || y >= this.length) return GetNull();
         return this.tiles[x][y] || GetNull();
@@ -98,6 +135,7 @@ export default class Map {
 
     Dig(x, y) {
         if(this.GetTile(x, y).IsDiggable) this.tiles[x][y] = GetFloor();
+        console.log(this.items);
     }
 
     IsWalkable(x, y) {
